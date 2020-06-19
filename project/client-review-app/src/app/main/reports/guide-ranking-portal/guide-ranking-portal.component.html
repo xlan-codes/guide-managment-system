@@ -1,0 +1,71 @@
+<div id="dashboard-analytics" class="page-layout blank">
+
+
+    <div class="content">
+
+        <div class="left mr-lg-32">
+
+            <form class="mat-card mat-elevation-z4 p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                name="form" (ngSubmit)="submit()" [formGroup]="searchForm">
+
+                <div class="pb-24 font-size-18 font-weight-300">
+                    Rankings
+                </div>
+
+
+                <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start start">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label>Date</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="date" placeholder ="Date">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker startView="multi-year"></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <input type="text" matInput hidden="true">
+                        <ng-select placeholder="Portal" formControlName="portalId" required>
+                            <ng-option *ngFor="let portal of portals" [value]="portal.portalId">{{portal.portalName}}</ng-option>
+                        </ng-select>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start start">
+                    <button mat-raised-button color="primary" style="float: right;" >Search</button>
+                </div>
+
+            </form>
+
+
+        </div>
+        <div>
+                <div class="mat-elevation-z8">
+                    <mat-table [dataSource]="report" matSort>
+                
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="guideName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.GuideFullname}} </mat-cell>
+                        </ng-container>
+                
+                        <!-- score Column -->
+                        <ng-container matColumnDef="score">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Score </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.CountReviews}} </mat-cell>
+                        </ng-container>
+                
+                        <!-- <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Portal Name </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.portalName}} </mat-cell>
+                        </ng-container> -->
+                
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;">
+                        </mat-row>
+                    </mat-table>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+            </div>
+        </div>
+
+    </div>
+
+</div>

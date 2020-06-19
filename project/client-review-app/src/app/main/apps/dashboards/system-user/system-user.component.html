@@ -1,0 +1,222 @@
+<div id="dashboard-project" class="page-layout simple right-sidebar" fxLayout="row">
+
+    <!-- CENTER -->
+    <div class="center" fusePerfectScrollbar>
+
+        <!-- CONTENT -->
+        <div class="content">
+
+            <mat-tab-group dynamicHeight>
+
+                <mat-tab label="Users">
+                    <div class="mat-elevation-z8">
+                        <mat-table [dataSource]="userList" matSort>
+                    
+                            <!-- ID Column -->
+                            <ng-container matColumnDef="id">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.userID}} </mat-cell>
+                            </ng-container>
+                
+                    
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="firstName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.firstName}} </mat-cell>
+                            </ng-container>
+                    
+                            <!-- Color Column -->
+                            <ng-container matColumnDef="lastName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.lastName}} </mat-cell>
+                            </ng-container>
+
+                            <!-- Color Column -->
+                            <ng-container matColumnDef="email">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
+                            </ng-container>
+
+                            <!-- Delete Column -->
+                            <ng-container matColumnDef="delete">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Delete </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> <button  mat-raised-button (click)="deleteUser(row.userId)" color="warn">Delete</button> </mat-cell>
+                            </ng-container>
+
+                            <!-- Delete Column -->
+                            <ng-container matColumnDef="edit">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Edit </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> <button  mat-raised-button (click)="editUser(row.userId)" color="warn">Edit</button> </mat-cell>
+                            </ng-container>
+                    
+                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+                        </mat-table>
+                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                    </div>
+                </mat-tab>
+
+                <mat-tab label="Add User">
+                        <form class="mat-card mat-elevation-z4 p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" (ngSubmit)="submitUser()" [formGroup]="userForm">
+
+                            <div class="pb-24 font-size-18 font-weight-300">
+                                Add User
+                            </div>
+
+                            <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start start">
+                                    <div class="row">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label>FirstName</mat-label>
+                                            <input matInput formControlName="firstName" required>
+                                            <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                                            <mat-error>User First Name is required!</mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label> Last Name</mat-label>
+                                            <input matInput formControlName="lastName" required>
+                                            <mat-error>User Last Name is required!</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="row">
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label> Email</mat-label>
+                                            <input matInput formControlName="email" required>
+                                            <mat-error>User Email is required!</mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <ng-select [multiple]="true" placeholder="Roles" formControlName="roleId" required>
+                                                <ng-option *ngFor="let role of roleList" [value]="role.roleId">{{guide.guideName}}</ng-option>
+                                            </ng-select>
+                                            <input matInput formControlName="roleId" required>
+                                            <mat-error>Role is required!</mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <mat-label> Password</mat-label>
+                                            <input matInput formControlName="password" required>
+                                            <mat-error>User Password is required!</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                
+
+
+                            </div>
+
+                            <div fxLayout="column"  fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start start">
+                                    <button  mat-raised-button [disabled]="disableSaveButton" color="primary">Save</button>
+                            </div>
+
+                            <div class="row"  *ngIf="showSuccessMsg">
+                                <div class="col-xs-12">
+                                  <p class="alert alert-success">
+                                      <strong>User saved Success!</strong>
+                                  </p>
+                                </div>
+                            </div>
+                            <div class="row"  *ngIf="showErrorMsg">
+                                <div class="col-xs-12">
+                                  <p class="alert alert-success">
+                                      <strong>User not saved Successfully!</strong>
+                                  </p>
+                                </div>
+                            </div>
+
+                        </form>
+
+                </mat-tab>
+
+                <mat-tab label="User Roles">
+                    <form class="mat-card mat-elevation-z4 p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" (ngSubmit)="submitRole()" [formGroup]="roleForm">
+
+                            <div class="pb-24 font-size-18 font-weight-300">
+                                User Roles
+                            </div>
+
+                            <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start start">
+                                <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                    <mat-label>Role Name</mat-label>
+                                    <input matInput formControlName="roleName" required>
+                                    <mat-error>Role Name is required!</mat-error>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                    <mat-label> Role Description</mat-label>
+                                    <input matInput formControlName="roleDescription" required>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                    <mat-label> Role Tag</mat-label>
+                                    <input matInput formControlName="roleTag" required>
+                                    <mat-error>Role Tag is required!</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="column"  fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start start">
+                                <button  mat-raised-button [disabled]="disableSaveButton" color="primary">Save</button>
+                            </div>
+
+                            <div class="row"  *ngIf="showSuccessMsg">
+                                <div class="col-xs-12">
+                                  <p class="alert alert-success">
+                                      <strong>User saved Success!</strong>
+                                  </p>
+                                </div>
+                            </div>
+                            <div class="row"  *ngIf="showErrorMsg">
+                                <div class="col-xs-12">
+                                  <p class="alert alert-success">
+                                      <strong>Role not saved Successfully!</strong>
+                                  </p>
+                                </div>
+                            </div>
+
+                        </form>
+                    <div class="mat-elevation-z8">
+                        <mat-table [dataSource]="roleList" matSort>
+
+                            <!-- Role Column -->
+                            <ng-container matColumnDef="roleName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Role Name </mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.roleName}} </mat-cell>
+                            </ng-container>
+
+                            <!-- Description Column -->
+                            <ng-container matColumnDef="roleDescription">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Role Description</mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.roleDescription}} </mat-cell>
+                            </ng-container>
+
+                            <!-- Color Column -->
+                            <ng-container matColumnDef="roleTag">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Role Tag </mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.roleTag}} </mat-cell>
+                            </ng-container>
+
+                            <!-- Delete Column -->
+                            <ng-container matColumnDef="delete">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Delete </mat-header-cell>
+                                <mat-cell *matCellDef="let row"> <button  mat-raised-button (click)="deleteRole(row.roleId)" color="warn">Delete</button> </mat-cell>
+                            </ng-container>
+
+                            <!-- Delete Column -->
+                            <ng-container matColumnDef="edit">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Edit </mat-header-cell>
+                                <mat-cell *matCellDef="let row"> <button  mat-raised-button (click)="editRole(row.roleId)" color="warn">Edit</button> </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef="displayedColumnsForRole"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumnsForRole;"></mat-row>
+
+                        </mat-table>
+                        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+
+        </div>
+        <!-- / CONTENT -->
+
+    </div>
+    <!-- / CENTER -->
+
+
+</div>
+

@@ -1,0 +1,18 @@
+  [
+    {
+      "name": "default",
+      "type": "mssql",
+      "host": "173.212.240.86",
+      "port": 1433,
+      "username": "Lani",
+      "password": "L@ni123!",
+      "database": "MTCR2",
+      "schema": "dbo",
+      "synchronize": false,
+      "logging": true,
+      "logger": "file",
+      "entities": [
+        "dist/src/repository/entity/**/*.js"
+      ]
+    }
+  ]

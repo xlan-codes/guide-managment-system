@@ -1,0 +1,125 @@
+<div id="manuals" class="page-layout simple right-sidebar" fxLayout="row">
+
+    <!-- CENTER -->
+    <div class="center" fusePerfectScrollbar>
+
+        <!-- CONTENT -->
+        <div class="content">
+
+            <mat-tab-group dynamicHeight>
+
+                <mat-tab label="Manuals">
+                        <div class="mat-elevation-z8">
+                                <table mat-table [dataSource]="manuals" matSort>
+                            
+                                    <ng-container matColumnDef="id">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                                        <td mat-cell *matCellDef="let row"> {{row.manualId}} </td>
+                                    </ng-container>
+                            
+                                    <!-- Progress Column -->
+                                    <ng-container matColumnDef="manualGrup">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
+                                        <td mat-cell *matCellDef="let row"> {{row.manualName}} </td>
+                                    </ng-container>
+                            
+                                    <!-- Name Column -->
+                                    <ng-container matColumnDef="description">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+                                        <td mat-cell *matCellDef="let row"> {{row.description}} </td>
+                                    </ng-container>
+                            
+                                    <!-- Color Column -->
+                                    <ng-container matColumnDef="download">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Download </th>
+                                        <td mat-cell *matCellDef="let row"> <button  mat-raised-button (click)="edit(row.manualId)" color="primary">Download</button> </td>
+                                    </ng-container>
+
+                                    <!-- Color Column -->
+                                    <ng-container matColumnDef="delete">
+                                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Delete </th>
+                                        <td mat-cell *matCellDef="let row"> <button  mat-raised-button (click)="delete(row.manualId)" color="warn">Delete</button></td>
+                                    </ng-container>
+                            
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                </table>
+                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                            </div>
+                    <!-- / WIDGET GROUP -->
+
+                </mat-tab>
+
+                <mat-tab label="Add Manual">
+                        <form class="mat-card mat-elevation-z4 p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" (ngSubmit)="onSubmit()" [formGroup]="form">
+
+                            <div class="pb-24 font-size-18 font-weight-300">
+                                Add Manual
+                            </div>
+            
+                            <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start start">
+                                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                            <!-- <mat-label>Tour</mat-label> -->
+                                            <input type="text" matInput  hidden="true">
+                                            <ng-select matInput 
+                                                    formControlName="tourId"
+                                                    [items]="tourList"
+                                                    bindLabel="tourName"
+                                                    autofocus
+                                                    bindValue="tourId"
+                                                   >
+                                            </ng-select>
+                                        </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                                    <mat-label>Manual Name</mat-label>
+                                    <input matInput formControlName="manualName" required>
+                                    <mat-error>Manual Name is required!</mat-error>
+                                </mat-form-field>
+        
+                            </div>
+                                            
+                            <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start start">
+                                <mat-form-field appearance="outline" fxFlex="100">
+                                    <mat-label>Description</mat-label>
+                                    <textarea matInput formControlName="description" required>
+                                    
+                                    </textarea>
+                                    <mat-error>Description is required!</mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start start">
+                                <!-- ADD FILE BUTTON -->
+                                <div class="file-uploader" appearance="outline" fxFlex="50" class="pr-4">
+                                    <input  type="file" #fileInput formControlName="file" (change)="handleFileInput($event.target.files)"/>
+                                </div>
+                                <!-- / ADD FILE BUTTON -->
+                            <div appearance="outline" fxFlex="50" class="pr-4"><button mat-raised-button color="primary">Save</button></div>
+                            </div>
+
+                            <div fxLayout="column" fxLayoutAlign="start" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start start">
+                                    
+                            </div>
+                                               
+                
+                        </form>
+
+                        <div class="row"  *ngIf="responseMessage !== null || responseMessage !== undefined">
+                            <div class="col-xs-12">
+                              <p class="alert alert-success">
+                                  <strong>{{ responseMessage }}</strong>
+                              </p>
+                            </div>
+                        </div>       
+
+                </mat-tab>
+            </mat-tab-group>
+
+        </div>
+        <!-- / CONTENT -->
+
+    </div>
+    <!-- / CENTER -->
+
+
+</div>

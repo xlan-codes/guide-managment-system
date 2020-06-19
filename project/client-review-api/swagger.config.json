@@ -1,0 +1,18 @@
+{
+  "swagger": {
+    "outputDirectory": "./dist",
+    "entryFile": "./src/index.ts",
+    "name": "Customer Reviews API",
+    "description": "Documentation for customer reviews api",
+    "license": "MIT",
+    "produces": ["application/json"],
+    "version": "1.1",
+    "securityDefinitions": {
+      "Bearer": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  }
+}
